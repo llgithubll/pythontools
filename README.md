@@ -21,3 +21,6 @@
 示例：     python filetree.py C:\Desktop D:\filetree.txt
 路径不含空格
 ```
+
+### logger.py
+程序片段, 同时输出到控制台和文件中
