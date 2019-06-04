@@ -12,11 +12,12 @@ LAST_BRANCH = '└─'
 TAB = '│  '
 EMPTY_TAB = '   '
 IGNORE_DIRS = {'.git', '.idea'}
+IGNORE_FILES = {'filetree.py'}
 
 
 def get_dir_list(path, placeholder=''):
     folder_list = [folder for folder in os.listdir(path) if os.path.isdir(os.path.join(path, folder)) and folder not in IGNORE_DIRS]
-    file_list = [file for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))]
+    file_list = [file for file in os.listdir(path) if os.path.isfile(os.path.join(path, file)) and file not in IGNORE_FILES]
     result = ''
     for folder in folder_list[:-1]:
         result += placeholder + BRANCH + folder + '\n'
