@@ -2,6 +2,7 @@
 
 ### get_html.py
 * get_html(url, code='utf-8')
+* get_html_with_proxies(url, code='utf-8', proxies=None)
 * get_html_with_header(url, code='utf-8', header=None)
 * get_redirect_url_and_html(url, code='utf-8')
 

@@ -3,6 +3,7 @@ import urllib.request
 import urllib.parse
 from urllib.error import HTTPError, URLError
 import socket
+import requests
 
 
 socket.setdefaulttimeout(30)
@@ -33,6 +34,27 @@ def get_html(url, code='utf-8'):
         return html
     except:
         print('!!!%s 页面读取失败，丢弃' % url)
+        return ""
+
+
+def get_html_with_proxies(url, code='utf-8', proxies=None):
+    """
+    获取请求url返回的页面，默认utf-8解码，如果提供代理，则使用代理
+    否则使用默认代理
+    """
+    if proxies is None:
+        proxies = {
+            'http': 'http://127.0.0.1:1080',
+            'https': 'https://127.0.0.1:1080'
+        }
+
+    for i in range(3):
+        response = requests.get(url, proxies=proxies)
+        if response.status_code == requests.codes.ok:
+            return response.text
+        print('!!!', url, response.status_code)
+        time.sleep(10)
+    else:
         return ""
 
 
@@ -105,3 +127,8 @@ def get_redirect_url_and_html(url, code='utf-8'):
     except:
         print('!!!%s 页面读取失败，丢弃' % url)
         return None, ""
+
+
+if __name__ == '__main__':
+    html = get_html_with_proxies('http://www.google.com')
+    print(html)
