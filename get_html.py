@@ -4,9 +4,30 @@ import urllib.parse
 from urllib.error import HTTPError, URLError
 import socket
 import requests
-
+from random import choice
 
 socket.setdefaulttimeout(30)
+user_agents = [
+    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    # 'Googlebot/2.1 (+http://www.google.com/bot.html)',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)'
+    ' Ubuntu Chromium/49.0.2623.108 Chrome/49.0.2623.108 Safari/537.36',
+    # 'Gigabot/3.0 (http://www.gigablast.com/spider.html)',
+    'Mozilla/5.0 (Windows; U; Windows NT 5.1; pt-BR) AppleWebKit/533.3 '
+    '(KHTML, like Gecko)  QtWeb Internet Browser/3.7 http://www.QtWeb.net',
+    'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
+    'Chrome/41.0.2228.0 Safari/537.36',
+    'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.2 (KHTML, '
+    'like Gecko) ChromePlus/4.0.222.3 Chrome/4.0.222.3 Safari/532.2',
+    'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.4pre) '
+    'Gecko/20070404 K-Ninja/2.1.3',
+    'Mozilla/5.0 (Future Star Technologies Corp.; Star-Blade OS; x86_64; U; '
+    'en-US) iNet Browser 4.7',
+    'Mozilla/5.0 (Windows; U; Windows NT 6.1; rv:2.2) Gecko/20110201',
+    'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) '
+    'Gecko/20080414 Firefox/2.0.0.13 Pogo/2.0.0.13.6866',
+    # 'WorldWideweb (NEXT)'
+]
 
 
 def get_html(url, code='utf-8'):
@@ -37,7 +58,7 @@ def get_html(url, code='utf-8'):
         return ""
 
 
-def get_html_with_proxies(url, code='utf-8', proxies=None):
+def get_html_with_proxies(url, code='utf-8', proxies=None, timewait=10):
     """
     获取请求url返回的页面，默认utf-8解码，如果提供代理，则使用代理
     否则使用默认代理
@@ -49,11 +70,13 @@ def get_html_with_proxies(url, code='utf-8', proxies=None):
         }
 
     for i in range(3):
-        response = requests.get(url, proxies=proxies)
+        headers = {'User-Agent': choice(user_agents)}
+        response = requests.get(url, proxies=proxies, headers=headers)
         if response.status_code == requests.codes.ok:
+            response.encoding = code
             return response.text
         print('!!!', url, response.status_code)
-        time.sleep(10)
+        time.sleep(timewait)
     else:
         return ""
 
