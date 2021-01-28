@@ -26,3 +26,9 @@
 
 ### logger.py
 程序片段, 同时输出到控制台和文件中
+
+
+### forward_maximum_matching.py
+
+最大前向匹配分词，trie
+
