@@ -70,10 +70,12 @@ class Tokenizer:
             2. 分词结果list中每个元素是否是vocab中的词
 
         example
-            vocab: ['猪队友', '库克']
-            text: '库克克或称微软公司是猪队友吧'
-            return:
+            vocab = ['队友', '微软', '库克']
+            text = '库克称微软公司是队友'
 
+            return:
+            tokens:  ['库克', '称', '微软', '公', '司', '是', '队友']
+            is_word: [True, False, True, False, False, False, True]
         """
         if not self.has_vocab:
             return list(text), [False] * len(text)
@@ -113,8 +115,8 @@ class Tokenizer:
 
 
 if __name__ == '__main__':
-    vocab = ['中华', '中华人民', '共和国', '和国', '人权']
-    text = '中华人权管理方案：中华人民共和国共同富裕'
+    vocab = ['队友', '微软', '库克']
+    text = '库克称微软公司是队友'
     tokenizer = Tokenizer(vocab)
     tokens, is_word = tokenizer.forward_maximum_matching_cut(text)
     print(tokens)
