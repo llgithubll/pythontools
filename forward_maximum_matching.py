@@ -55,12 +55,15 @@ class Trie:
 
 
 class Tokenizer:
-    def __init__(self, vocab_list):
+    def __init__(self, vocab_list, do_lower_case=False):
         self.has_vocab = True
         if not vocab_list:
             self.has_vocab = False
         self.trie = Trie()
+        self.do_lower_case = do_lower_case
         for word in set(vocab_list):
+            if self.do_lower_case:
+                word = word.lower()
             self.trie.insert(word)
 
     def forward_maximum_matching_cut(self, text):
@@ -82,6 +85,9 @@ class Tokenizer:
 
         if not text:
             return [], []
+
+        if self.do_lower_case:
+            text = text.lower()
 
         tokens = []
         is_word = []
@@ -115,9 +121,9 @@ class Tokenizer:
 
 
 if __name__ == '__main__':
-    vocab = ['队友', '微软', '库克']
-    text = '库克称微软公司是队友'
-    tokenizer = Tokenizer(vocab)
+    vocab = ['队友', '微软', '库克', 'Apple']
+    text = 'apple公司库克称微软公司是队友'
+    tokenizer = Tokenizer(vocab, do_lower_case=True)
     tokens, is_word = tokenizer.forward_maximum_matching_cut(text)
     print(tokens)
     print(is_word)
